@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)file:///C:/Users/Mark/Downloads/index%20(1).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E4 Educator v2.0 — ESP32 Embedded Systems Curriculum</title>
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --brand:      #2E86AB;
+      --brand-dk:   #1A5F7A;
+      --brand-lt:   #6BB8D4;
+      --accent:     #F4A261;
+      --bg:         #0D1B2A;
+      --bg-card:    #132032;
+      --bg-card2:   #0F2236;
+      --text:       #E8EFF5;
+      --text-dim:   #7A9BB5;
+      --text-label: #4A7FA0;
+      --border:     #1E3A52;
+      --ok:         #2DC653;
+      --mono:       'Courier New', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--brand-lt); text-decoration: none; }
+    a:hover { color: var(--accent); }
+
+    /* ── Layout ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    nav {
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      position: sticky; top: 0;
+      background: rgba(13,27,42,0.96);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+    nav .inner {
+      max-width: 960px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-chip {
+      background: var(--brand);
+      color: #fff;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .nav-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--text);
+      letter-spacing: 0.2px;
+    }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--text-dim);
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 72px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: var(--brand);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: bold;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .hero h1 span { color: var(--brand-lt); }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+      max-width: 560px;
+    }
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: none;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--brand-dk); color: #fff; }
+    .btn-outline {
+      background: transparent;
+      color: var(--brand-lt);
+      border: 1.5px solid var(--brand);
+    }
+    .btn-outline:hover {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    /* ── Stat pills ── */
+    .hero-stats {
+      display: flex; gap: 0; flex-wrap: wrap;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      max-width: 560px;
+    }
+    .stat {
+      flex: 1; min-width: 120px;
+      padding: 18px 20px;
+      border-right: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--brand-lt);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* ── Section headings ── */
+    .section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+    .section-header { margin-bottom: 32px; }
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: bold;
+      color: var(--text);
+    }
+    .section-desc {
+      font-size: 15px;
+      color: var(--text-dim);
+      margin-top: 8px;
+      max-width: 640px;
+    }
+
+    /* ── Tier grid ── */
+    .tier-grid { display: grid; gap: 16px; }
+    .tier-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .tier-header {
+      padding: 16px 20px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .tier-badge {
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .tier1 .tier-badge { background: rgba(46,134,171,0.2); color: var(--brand-lt); }
+    .tier2 .tier-badge { background: rgba(244,162,97,0.2); color: var(--accent); }
+    .tier3 .tier-badge { background: rgba(45,198,83,0.2); color: var(--ok); }
+    .tier-name { font-size: 17px; font-weight: bold; color: var(--text); }
+    .tier-count { font-size: 13px; color: var(--text-dim); }
+    .tier-body { padding: 16px 20px; }
+    .tier-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 16px; }
+
+    /* ── Tutorial list ── */
+    .tut-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+    }
+    .tut-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text);
+      transition: border-color 0.15s;
+      text-decoration: none;
+    }
+    .tut-item:hover {
+      border-color: var(--brand);
+      color: var(--text);
+    }
+    .tut-ref {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--brand-lt);
+      background: rgba(46,134,171,0.15);
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .tut-ref.accent {
+      color: var(--accent);
+      background: rgba(244,162,97,0.15);
+    }
+    .tut-ref.ok {
+      color: var(--ok);
+      background: rgba(45,198,83,0.15);
+    }
+
+    /* ── Download grid ── */
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .dl-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      display: flex; align-items: flex-start; gap: 14px;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .dl-card:hover {
+      border-color: var(--brand);
+      background: var(--bg-card2);
+    }
+    .dl-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .dl-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .dl-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .dl-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-top: 6px;
+    }
+    .dl-pdf  { background: rgba(244,162,97,0.2); color: var(--accent); }
+    .dl-zip  { background: rgba(46,134,171,0.2); color: var(--brand-lt); }
+
+    /* ── Tech stack pills ── */
+    .stack-pills {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 16px;
+    }
+    .pill {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--brand-lt);
+    }
+
+    /* ── About block ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 600px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 22px 24px;
+    }
+    .about-card h3 {
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--brand-lt);
+      margin-bottom: 10px;
+    }
+    .about-card p {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: 960px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-brand { font-size: 14px; color: var(--text-dim); }
+    .footer-brand strong { color: var(--brand-lt); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 13px; color: var(--text-dim); }
+    .footer-links a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────────────────────────────── -->
+<nav>
+  <div class="inner">
+    <div class="nav-brand">
+      <span class="nav-chip">E4</span>
+      <span class="nav-title">Educator v2.0</span>
+    </div>
+    <div class="nav-links">
+      <a href="file:///C:/Users/Mark/Downloads/index%20(1).html#curriculum">Curriculum</a>
+      <a href="file:///C:/Users/Mark/Downloads/index%20(1).html#downloads">Downloads</a>
+      <a href="file:///C:/Users/Mark/Downloads/index%20(1).html#stack">Tech stack</a>
+      <a href="file:///C:/Users/Mark/Downloads/index%20(1).html#about">About</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Walark Electronics · Fundrum Engineering · Christchurch, New Zealand</div>
+    <h1>Learn embedded systems<br>the way they're <span>built professionally</span></h1>
+    <p class="hero-sub">
+      A complete ESP32 curriculum — from GPIO to dual-core FreeRTOS audio analysis.
+      Every technique, every discipline, production-quality from Tutorial 1.
+    </p>
+    <div class="hero-actions">
+      <a href="file:///C:/Users/Mark/Downloads/index%20(1).html#downloads" class="btn btn-primary">⬇ Download free</a>
+      <a href="file:///C:/Users/Mark/Downloads/index%20(1).html#curriculum" class="btn btn-outline">View curriculum</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">16</div>
+        <div class="stat-label">Tutorials</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Toolkit files</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24</div>
+        <div class="stat-label">Documents</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Curriculum ─────────────────────────────────────────────────────────── -->
+<div class="section" id="curriculum">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">What you'll learn</div>
+      <div class="section-title">The full curriculum</div>
+      <p class="section-desc">
+        Three tiers. Each builds directly on the one before. By Tier 3 you're
+        building deployable, specification-driven firmware — not demonstration sketches.
+      </p>
+    </div>
+
+    <div class="tier-grid">
+
+      <!-- Tier 1 -->
+      <div class="tier-card tier1">
+        <div class="tier-header">
+          <div>
+            <div class="tier-name">Tier 1 — Platform fundamentals</div>
+            <div class="tier-count">Tutorials T01 – T07 · No display required</div>
+          </div>
+          <span class="tier-badge">Tier 1</span>
+        </div>
+        <div class="tier-body">
+          <p class="tier-desc">
+            Everything you need before touching a screen. GPIO, timing discipline,
+            debounced buttons, I²C sensors, OLED, one-wire temperature, LDR, and non-blocking audio.
+          </p>
+          <div class="tut-list">
+            <span class="tut-item"><span class="tut-ref">T01</span>PlatformIO &amp; the E4</span>
+            <span class="tut-item"><span class="tut-ref">T02</span>GPIO &amp; build_flags</span>
+            <span class="tut-item"><span class="tut-ref">T03</span>Buttons &amp; debounce</span>
+            <span class="tut-item"><span class="tut-ref">T04</span>I²C fundamentals</span>
+            <span class="tut-item"><span class="tut-ref">T05</span>OLED display</span>
+            <span class="tut-item"><span class="tut-ref">T06</span>One-wire &amp; analog</span>
+            <span class="tut-item"><span class="tut-ref">T07</span>Audio output</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="tier-card tier2">
+        <div class="tier-header">
+          <div>
+            <div class="tier-name">Tier 2 — Core skills</div>
+            <div class="tier-count">Tutorials T08 – T16 · Full board capability</div>
+          </div>
+          <span class="tier-badge">Tier 2</span>
+        </div>
+        <div class="tier-body">
+          <p class="tier-desc">
+            TFT display with flicker-free sprite pipeline, XPT2046 touch, SD card logging,
+            NVS persistence, WiFi + MQTT, LittleFS web server, OTA updates,
+            ESP-NOW peer networking, I²S MEMS microphone and FFT analysis.
+          </p>
+          <div class="tut-list">
+            <span class="tut-item"><span class="tut-ref accent">T08</span>TFT &amp; sprites</span>
+            <span class="tut-item"><span class="tut-ref accent">T09</span>Touch input</span>
+            <span class="tut-item"><span class="tut-ref accent">T10</span>SD card</span>
+            <span class="tut-item"><span class="tut-ref accent">T11</span>NVS persistence</span>
+            <span class="tut-item"><span class="tut-ref accent">T12</span>WiFi &amp; MQTT</span>
+            <span class="tut-item"><span class="tut-ref accent">T13</span>LittleFS</span>
+            <span class="tut-item"><span class="tut-ref accent">T14</span>OTA updates</span>
+            <span class="tut-item"><span class="tut-ref accent">T15</span>ESP-NOW</span>
+            <span class="tut-item"><span class="tut-ref accent">T16</span>I²S audio &amp; MEMS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 3 -->
+      <div class="tier-card tier3">
+        <div class="tier-header">
+          <div>
+            <div class="tier-name">Tier 3 — Integrated projects</div>
+            <div class="tier-count">Projects P01 – P05 · Specification-driven, deployable</div>
+          </div>
+          <span class="tier-badge">Tier 3</span>
+        </div>
+        <div class="tier-body">
+          <p class="tier-desc">
+            Five complete instruments. Multi-module architecture, version control,
+            production-quality code discipline throughout.
+          </p>
+          <div class="tut-list">
+            <span class="tut-item"><span class="tut-ref ok">P01</span>Environmental Monitor</span>
+            <span class="tut-item"><span class="tut-ref ok">P02</span>Data Logger</span>
+            <span class="tut-item"><span class="tut-ref ok">P03</span>Wireless Sensor Network</span>
+            <span class="tut-item"><span class="tut-ref ok">P04</span>BANDSCOPE Audio Analyser</span>
+            <span class="tut-item"><span class="tut-ref ok">P05</span>Touch UI Controller</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── Downloads ──────────────────────────────────────────────────────────── -->
+<div class="section" id="downloads">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Free to download</div>
+      <div class="section-title">Everything you need</div>
+      <p class="section-desc">
+        All documents and source code are free. The E4 Educator board is available
+        from Walark Electronics.
+      </p>
+    </div>
+
+    <div class="dl-grid">
+
+      <a href="file:///C:/Users/Mark/Downloads/docs/00-Introduction-to-ESP32.pdf" class="dl-card">
+        <div class="dl-icon">📄</div>
+        <div>
+          <div class="dl-title">Introduction to the ESP32</div>
+          <div class="dl-desc">What it is, why it was chosen, how PlatformIO changes the workflow.</div>
+          <span class="dl-badge dl-pdf">PDF</span>
+        </div>
+      </a>
+
+      <a href="file:///C:/Users/Mark/Downloads/docs/Quick-Start-Guide.pdf" class="dl-card">
+        <div class="dl-icon">🚀</div>
+        <div>
+          <div class="dl-title">Quick Start Guide</div>
+          <div class="dl-desc">First firmware flashed in under 15 minutes.</div>
+          <span class="dl-badge dl-pdf">PDF</span>
+        </div>
+      </a>
+
+      <a href="file:///C:/Users/Mark/Downloads/docs/Reference-Card.pdf" class="dl-card">
+        <div class="dl-icon">📋</div>
+        <div>
+          <div class="dl-title">Reference Card</div>
+          <div class="dl-desc">All pin assignments, zone constants, and library versions on one page.</div>
+          <span class="dl-badge dl-pdf">PDF</span>
+        </div>
+      </a>
+
+      <a href="file:///C:/Users/Mark/Downloads/docs/T01-T07-Tier1.pdf" class="dl-card">
+        <div class="dl-icon">📚</div>
+        <div>
+          <div class="dl-title">Tier 1 Tutorials (T01–T07)</div>
+          <div class="dl-desc">Platform fundamentals. No display required.</div>
+          <span class="dl-badge dl-pdf">PDF · 7 documents</span>
+        </div>
+      </a>
+
+      <a href="file:///C:/Users/Mark/Downloads/docs/T08-T16-Tier2.pdf" class="dl-card">
+        <div class="dl-icon">📚</div>
+        <div>
+          <div class="dl-title">Tier 2 Tutorials (T08–T16)</div>
+          <div class="dl-desc">TFT, touch, WiFi, MQTT, OTA, ESP-NOW, I²S audio.</div>
+          <span class="dl-badge dl-pdf">PDF · 9 documents</span>
+        </div>
+      </a>
+
+      <a href="file:///C:/Users/Mark/Downloads/docs/P01-P05-Tier3.pdf" class="dl-card">
+        <div class="dl-icon">🔧</div>
+        <div>
+          <div class="dl-title">Tier 3 Projects (P01–P05)</div>
+          <div class="dl-desc">Five complete, deployable instruments.</div>
+          <span class="dl-badge dl-pdf">PDF · 5 documents</span>
+        </div>
+      </a>
+
+      <a href="file:///C:/Users/Mark/Downloads/docs/Factory-Test-Procedure.pdf" class="dl-card">
+        <div class="dl-icon">✅</div>
+        <div>
+          <div class="dl-title">Factory Test Procedure</div>
+          <div class="dl-desc">Board acceptance test — every peripheral verified before issue.</div>
+          <span class="dl-badge dl-pdf">PDF</span>
+        </div>
+      </a>
+
+      <a href="file:///C:/Users/Mark/Downloads/code/E4-Educator-v2-Source-Code.zip" class="dl-card">
+        <div class="dl-icon">💾</div>
+        <div>
+          <div class="dl-title">Complete Source Code</div>
+          <div class="dl-desc">All tutorials and projects. PlatformIO projects, ready to build.</div>
+          <span class="dl-badge dl-zip">ZIP</span>
+        </div>
+      </a>
+
+      <a href="file:///C:/Users/Mark/Downloads/code/E4-Educator-v2-Factory-Test-Firmware.zip" class="dl-card">
+        <div class="dl-icon">🏭</div>
+        <div>
+          <div class="dl-title">Factory Test Firmware</div>
+          <div class="dl-desc">18-test board acceptance firmware with NVS serial number storage.</div>
+          <span class="dl-badge dl-zip">ZIP</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── Tech stack ──────────────────────────────────────────────────────────── -->
+<div class="section" id="stack">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Pinned. Reproducible. Tested.</div>
+      <div class="section-title">Technology stack</div>
+      <p class="section-desc">
+        Every library version is locked. Build identically today and in three years.
+      </p>
+    </div>
+    <div class="stack-pills">
+      <span class="pill">espressif32 @ 6.6.0</span>
+      <span class="pill">TFT_eSPI @ 2.5.43</span>
+      <span class="pill">PubSubClient @ 2.8</span>
+      <span class="pill">ArduinoJson @ 6.21.3</span>
+      <span class="pill">arduinoFFT @ 1.6.2</span>
+      <span class="pill">ElegantOTA @ 2.2.9</span>
+      <span class="pill">RTClib @ 2.1.1</span>
+      <span class="pill">Adafruit BMP280 @ 2.6.6</span>
+      <span class="pill">PlatformIO + VS Code</span>
+      <span class="pill">ILI9341 · XPT2046</span>
+      <span class="pill">AHT20 · DS18B20 · BMP280</span>
+      <span class="pill">ICS43434 MEMS mic</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── About ───────────────────────────────────────────────────────────────── -->
+<div class="section" id="about">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">The people behind it</div>
+      <div class="section-title">About</div>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <h3>Walark Electronics</h3>
+        <p>
+          Walark Electronics develops embedded products and educational hardware
+          from Christchurch, New Zealand. The E4 Educator board was designed to
+          support a curriculum that teaches embedded systems the way they are
+          built professionally — not as a toy, but as a discipline.
+        </p>
+      </div>
+      <div class="about-card">
+        <h3>Fundrum Engineering</h3>
+        <p>
+          Fundrum Engineering is the firmware and product engineering practice of
+          Mark Weir — embedded systems developer and leading drummer with 56 years
+          of competitive pipe band experience. Commercial products include DRUMLINE
+          (snare tuner) and DRONELINE (bagpipe drone tuner), both built on ESP32.
+        </p>
+      </div>
+      <div class="about-card">
+        <h3>Who this is for</h3>
+        <p>
+          Advanced hobbyists who have outgrown Arduino sketches and want to build
+          real networked instruments. Teachers looking for a structured embedded
+          systems curriculum with production-quality code from day one.
+          Anyone who wants to understand what is actually happening inside a
+          connected device.
+        </p>
+      </div>
+      <div class="about-card">
+        <h3>The E4 board</h3>
+        <p>
+          The Enceladus Educator v2.0 is a socketed ESP32 carrier board with
+          every peripheral needed for the full curriculum on a single PCB —
+          ILI9341 TFT, XPT2046 touch, microSD, AHT20, ICS43434 MEMS mic,
+          DS18B20 header, LDR, RGB LED, piezo, and DAC header.
+          Available from Walark Electronics.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>E4 Educator v2.0</strong> · Walark Electronics · Fundrum Engineering ·
+      Christchurch, New Zealand · 2026
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/CHCHmark/e4-educator">GitHub</a>
+      <a href="file:///C:/Users/Mark/Downloads/index%20(1).html#downloads">Downloads</a>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
